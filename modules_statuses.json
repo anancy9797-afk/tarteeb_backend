@@ -1,0 +1,19 @@
+{
+    "Common": true,
+    "School": true,
+    "Teacher": true,
+    "Student": true,
+    "Class": true,
+    "Subject": true,
+    "Grade": true,
+    "Classroom": true,
+    "User": true,
+    "Session": true,
+    "Employee": true,
+    "Purchase": true,
+    "Maintenance": true,
+    "Salary": true,
+    "Expense": true,
+    "Notification": true,
+    "Country": true
+}
