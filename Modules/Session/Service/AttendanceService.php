@@ -42,7 +42,6 @@ class AttendanceService
     }
 
 $school = School::find($teacherTakenAttendance->school_id);
-
 $schoolSettings = $school?->settings;
 
 $teacherTakenAttendanceProfile =
@@ -54,12 +53,14 @@ $teacherTakenAttendanceProfile =
         $attendanceDate = $data['date'] ?? now()->toDateString();
 
         foreach ($data['attendance'] as $attendance) {
+
             // التحقق هل تم تسجيل حضور/غياب الطالب ده في نفس اليوم ده قبل كده ولا لأ
             $existingAttendance = Attendance::where('student_id', $attendance['student_id'])
                 ->whereDate('created_at', $attendanceDate)
                 ->first();
 
             if (!$existingAttendance) {
+
                 // إنشاء سجل حضور جديد مرتبط بالطالب والتاريخ فقط
                 Attendance::create([
                     'student_id' => $attendance['student_id'],
@@ -70,20 +71,27 @@ $teacherTakenAttendanceProfile =
                 ]);
 
                     saveHistory( $attendance, $teacherTakenAttendance, $teacherTakenAttendanceProfile);
-
+                    if ($schoolSettings) {
+                        $this->parentNotificationWhatsApp($attendance['student_id'], $schoolSettings);
+                    }
                 // إرسال إشعار واتساب لو الطالب غائب (is_present == 0)
-                                if ($schoolSettings) {
+              //                   if ($schoolSettings) {
 
-               // if ($schoolSettings && $attendance['is_present'] == 0) {
-                 $this->parentNotificationWhatsApp($attendance['student_id'], $schoolSettings);
-                }
+              //  // if ($schoolSettings && $attendance['is_present'] == 0) {
+              //    $this->parentNotificationWhatsApp($attendance['student_id'], $schoolSettings);
+
+              //   }
             } else {
+
                 // لو السجل موجود مسبقاً لنفس اليوم، نقوم بتحديث حالته (حاضر/غائب)
                 $existingAttendance->update([
                     'is_present' => $attendance['is_present'],
                     'teacher_id' => $teacherTakenAttendanceProfile->id ?? null,
                 ]);
                                     saveHistory( $attendance, $teacherTakenAttendance, $teacherTakenAttendanceProfile);
+                                                        if ($schoolSettings) {
+                        $this->parentNotificationWhatsApp($attendance['student_id'], $schoolSettings);
+                    }
 
             }
         }
@@ -110,9 +118,9 @@ $teacherTakenAttendanceProfile =
     //                     'teacher_id' => $teacherTakenAttendanceProfile->id,
     //                 ]);
     //                 saveHistory($data['session_id'], $attendance, $teacherTakenAttendance, $teacherTakenAttendanceProfile);
-    //                 if ($schoolSettings) {
-    //                     $this->parentNotificationWhatsApp($attendance['student_id'], $schoolSettings);
-    //                 }
+                    // if ($schoolSettings) {
+                    //     $this->parentNotificationWhatsApp($attendance['student_id'], $schoolSettings);
+                    // }
     //             }
     //         }
     //     } else {
