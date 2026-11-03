@@ -55,8 +55,9 @@ class ExpenseStudentAdminController extends Controller
             DB::beginTransaction();
             $studentExpense = $this->studentExpenseService->updateStatus($request->all(), $studentExpense);
             DB::commit();
-            $this->sendNotificationToStudent($studentExpense);
-            $this->parentNotificationWhatsApp($studentExpense);
+                    $this->sendNotificationToStudent($studentExpense);
+         $this->parentNotificationWhatsApp($studentExpense);
+
             return returnMessage(true, 'Student expense status updated successfully', $studentExpense);
         } catch (\Exception $e) {
             DB::rollBack();

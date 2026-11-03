@@ -32,7 +32,7 @@ class AttendanceRequest extends FormRequest
         }
         if ($this->isMethod('POST')) {
             return [
-                'session_id' => [ 'exists:sessions,id'],
+            //    'session_id' => [ 'exists:sessions,id'],
                 'attendance' => ['required', 'array'],
                 'attendance.*.student_id' => ['required', 'exists:students,id'],
                 'attendance.*.is_present' => ['required', 'boolean'],

@@ -17,6 +17,24 @@ class StudentResource extends JsonResource
             'email' => $this->email,
             'identity_number' => $this->identity_number,
             'parent_email' => $this->parent_email ?? null,
+                        'parent_name' => $this->parent_name ?? null,
+            'transport'=> $this->transport ?? null,
+                        'address'=> $this->address ?? null,
+                                    'region_id'=> $this->region ?? null,
+                                                'password'=> $this->password ?? null,
+
+'parent' => $this->parent ? [
+                'id' => $this->parent->id,
+                'parent_name' => $this->parent->parent_name ?? null,
+                'mother_name' => $this->parent->mother_name ?? null,
+                'father_phone' => $this->parent->father_phone ?? null,
+                'mother_phone' => $this->parent->mother_phone ?? null,
+                'father_job' => $this->parent->father_job ?? null,
+                'mother_job' => $this->parent->mother_job ?? null,
+                // أضف أي حقول أخرى موجودة في جدول student_parents تريد إظهارها
+            ] : null,
+
+
             'parent_phone' => $this->parent_phone,
             'gender' => $this->gender == 'm' ? 'Male' : 'Female',
             'grade' => $this->grade->name,

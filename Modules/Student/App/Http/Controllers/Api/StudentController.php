@@ -39,7 +39,13 @@ class StudentController extends Controller
         $students = $this->studentService->findAll($data);
         return returnMessage(true, 'Students Fetched Successfully', StudentResource::collection($students)->response()->getData(true));
     }
-
+    public function getallstudents(Request $request)
+    {
+        $data = $request->all();
+$relations = ['state', 'branch'];
+        $students = $this->studentService->findAllStudents($data,$relations);
+        return returnMessage(true, 'Students Fetched Successfully', StudentResource::collection($students)->response()->getData(true));
+    }
     public function store(StudentRequest $request, UserService $userService)
     {
         Log::info('Student store (admin): started', [

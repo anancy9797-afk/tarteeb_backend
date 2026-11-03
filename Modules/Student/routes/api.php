@@ -21,6 +21,8 @@ use Modules\Student\App\Http\Controllers\Api\StudentRegisterAdminController;
 
 Route::apiResource('students', StudentController::class)->only(['index', 'store']);
 Route::post('students/{student}/delete', [StudentController::class, 'destroy']);
+
+Route::get('getallstudents', [StudentController::class, 'getallstudents']);
 Route::group(['prefix' => 'students'], function () {
     Route::get('graduate', [StudentController::class, 'getStudentsToGraduate']);
     Route::post('graduate', [StudentController::class, 'graduate']);

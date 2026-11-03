@@ -14,34 +14,13 @@ use Modules\Class\App\Http\Requests\ClassRequest;
 
 class ClassController extends Controller
 {
-   private $classService;
-  //  public function __construct(ClassService $classService){
-  //     $this->middleware('auth:user');
-  //     $this->middleware('role:Super Admin|School Manager|Teacher');
-  //     $this->middleware('permission:Index-class', ['only' => ['index']]);
-  //     $this->middleware('permission:Create-class', ['only' => ['store']]);
-  //     $this->middleware('permission:Edit-class', ['only' => ['update', 'activate']]);
-  //     $this->middleware('permission:Delete-class', ['only' => ['destroy']]);
-  //     $this->classService = $classService;
-  //  }
-
-
-public function __construct(ClassService $classService)
-{
-    $this->middleware('auth:user')->except(['index']);
-
-    $this->middleware('role:Super Admin|School Manager|Teacher')
-        ->except(['index']);
-
-    $this->middleware('permission:Create-class')->only(['store']);
-
-    $this->middleware('permission:Edit-class')
-        ->only(['update', 'activate']);
-
-    $this->middleware('permission:Delete-class')->only(['destroy']);
-
+       private $classService;
+ public function __construct(ClassService $classService){
     $this->classService = $classService;
+
 }
+
+
    public function index(Request $request){
       $data = $request->all();
       $classes = $this->classService->findAll($data);

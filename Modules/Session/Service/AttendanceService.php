@@ -31,12 +31,28 @@ class AttendanceService
     }
     function create($data)
     {
+
         $teacherTakenAttendance = auth('user')->user();
-        $schoolSettings = School::find($teacherTakenAttendance->school_id)->settings ?? null;
-        $teacherTakenAttendanceProfile = $teacherTakenAttendance->teacherProfile;
+
+            if (!$teacherTakenAttendance) {
+              
+        throw new \Illuminate\Auth\AuthenticationException(
+            'User is not authenticated.'
+        );
+    }
+
+$school = School::find($teacherTakenAttendance->school_id);
+
+$schoolSettings = $school?->settings;
+
+$teacherTakenAttendanceProfile =
+    $teacherTakenAttendance->teacherProfile;
+        // $schoolSettings = School::find($teacherTakenAttendance->school_id)->settings ?? null;
+        // $teacherTakenAttendanceProfile = $teacherTakenAttendance->teacherProfile;
         
         // استخدام التاريخ المُرسل أو تاريخ اليوم افتراضياً
         $attendanceDate = $data['date'] ?? now()->toDateString();
+
         foreach ($data['attendance'] as $attendance) {
             // التحقق هل تم تسجيل حضور/غياب الطالب ده في نفس اليوم ده قبل كده ولا لأ
             $existingAttendance = Attendance::where('student_id', $attendance['student_id'])
@@ -52,11 +68,14 @@ class AttendanceService
                     'teacher_id' => $teacherTakenAttendanceProfile->id ?? null,
                     'created_at' => $attendanceDate, 
                 ]);
+
                     saveHistory( $attendance, $teacherTakenAttendance, $teacherTakenAttendanceProfile);
 
                 // إرسال إشعار واتساب لو الطالب غائب (is_present == 0)
-                 if ($schoolSettings && $attendance['is_present'] == 0) {
-                   $this->parentNotificationWhatsApp($attendance['student_id'], $schoolSettings);
+                                if ($schoolSettings) {
+
+               // if ($schoolSettings && $attendance['is_present'] == 0) {
+                 $this->parentNotificationWhatsApp($attendance['student_id'], $schoolSettings);
                 }
             } else {
                 // لو السجل موجود مسبقاً لنفس اليوم، نقوم بتحديث حالته (حاضر/غائب)

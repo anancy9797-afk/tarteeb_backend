@@ -48,6 +48,48 @@ class StudentService
             ->orderByDesc('id');
         return getCaseCollection($students, $data);
     }
+    
+    
+    
+            function findAllStudents($data = [], $relations = [])
+    {
+        $students = Student::query()
+            ->when($data['name'] ?? null, function ($query) use ($data) {
+                $query->where('name', 'like', '%' . $data['name'] . '%');
+            })
+            ->when($data['email'] ?? null, function ($query) use ($data) {
+                $query->where('email', 'like', '%' . $data['email'] . '%');
+            })
+            ->when($data['grade_id'] ?? null, function ($query) use ($data) {
+                $query->where('grade_id', $data['grade_id']);
+            })
+            ->when($data['grade_category_id'] ?? null, function ($query) use ($data) {
+                $query->whereHas('grade', function ($query) use ($data) {
+                    $query->where('grade_category_id', $data['grade_category_id']);
+                });
+            })
+            // ->where(function ($query) {
+            //     $query->where('is_register', 0)
+            //         ->orWhere(function ($query) {
+            //             $query->where('is_register', 1)
+            //                 ->whereIn('id', function ($query) {
+            //                     $query->select('student_expenses.student_id')
+            //                         ->from('student_expenses')
+            //                         ->join('expense_details', function ($join) {
+            //                             $join->on('expense_details.expense_id', '=', 'student_expenses.expense_id')
+            //                                 ->where('expense_details.name', '=', 'مقدم الدفع');
+            //                         })
+            //                         ->where('student_expenses.status', 'accepted');
+            //                 });
+            //         });
+            // })
+            ->availableAll()
+            //->with('grade.gradeCategory', 'school')
+                        ->with($relations)
+
+            ->orderByDesc('id');
+        return getCaseCollection($students, $data);
+    }
 
     function findById($id)
     {
