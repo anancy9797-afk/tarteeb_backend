@@ -51,7 +51,7 @@ $teacherTakenAttendanceProfile =
         
         // استخدام التاريخ المُرسل أو تاريخ اليوم افتراضياً
         $attendanceDate = $data['date'] ?? now()->toDateString();
-dd($data);
+// dd($data);
 dd($data['attendance']);
         // foreach ($data['attendance'] as $attendance) {
 
