@@ -31,8 +31,8 @@ class LateAttendanceRequest extends FormRequest
         }
         if ($this->isMethod('POST')) {
            return [
-            'student_ids' => ['required', 'array', 'min:1'],
-            'student_ids.*' => [
+            'ids' => ['required', 'array', 'min:1'],
+            'ids.*' => [
                 'required',
                 'integer',
                 'distinct',
@@ -42,8 +42,8 @@ class LateAttendanceRequest extends FormRequest
         }
         if ($this->isMethod('PUT')) {
                return [
-            'student_ids' => ['required', 'array', 'min:1'],
-            'student_ids.*' => [
+            'ids' => ['required', 'array', 'min:1'],
+            'ids.*' => [
                 'required',
                 'integer',
                 'distinct',
