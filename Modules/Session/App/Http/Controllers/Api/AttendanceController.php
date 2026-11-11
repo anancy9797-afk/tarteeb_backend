@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use Modules\Session\DTO\AttendanceDto;
 use Modules\Session\Service\AttendanceService;
 use Modules\Session\App\Http\Requests\AttendanceRequest;
+use Modules\Session\App\Http\Requests\LateAttendanceRequest;
 use Modules\Session\App\resources\StudentAttendanceResource;
 
 
