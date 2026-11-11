@@ -67,8 +67,7 @@ class AttendanceController extends Controller
       try{
          DB::beginTransaction();
          $data = (new LateAttendanceDto($request))->dataFromRequest();
-dd($data);
-        //  $this->attendanceService->create($data);
+         $this->LateAttendanceService->create($data);
 
         //  DB::commit();
 
