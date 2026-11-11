@@ -17,15 +17,43 @@ use Modules\Session\Service\LateAttendanceService;
 class AttendanceController extends Controller
 {
    private $attendanceService;
-   public function __construct(AttendanceService $attendanceService){
-      $this->middleware('auth:user');
-      $this->middleware('role:Teacher');
-      $this->middleware('permission:Index-attendance|Create-attendance|Edit-attendance|Delete-attendance', ['only' => ['index', 'store']]);
-      $this->middleware('permission:Create-attendance', ['only' => ['store']]);
-      $this->middleware('permission:Edit-attendance', ['only' => ['update', 'activate']]);
-      $this->middleware('permission:Delete-attendance', ['only' => ['destroy']]);
-      $this->attendanceService = $attendanceService;
-   }
+private $lateAttendanceService;
+public function __construct(
+    AttendanceService $attendanceService,
+    LateAttendanceService $lateAttendanceService
+) {
+    $this->middleware('auth:user');
+    $this->middleware('role:Teacher');
+
+    $this->middleware(
+        'permission:Index-attendance|Create-attendance|Edit-attendance|Delete-attendance',
+        ['only' => ['index', 'store']]
+    );
+
+    $this->middleware('permission:Create-attendance', [
+        'only' => ['store', 'lateAttendanceMessage']
+    ]);
+
+    $this->middleware('permission:Edit-attendance', [
+        'only' => ['update', 'activate']
+    ]);
+
+    $this->middleware('permission:Delete-attendance', [
+        'only' => ['destroy']
+    ]);
+
+    $this->attendanceService = $attendanceService;
+    $this->lateAttendanceService = $lateAttendanceService;
+}
+  //  public function __construct(AttendanceService $attendanceService){
+  //     $this->middleware('auth:user');
+  //     $this->middleware('role:Teacher');
+  //     $this->middleware('permission:Index-attendance|Create-attendance|Edit-attendance|Delete-attendance', ['only' => ['index', 'store']]);
+  //     $this->middleware('permission:Create-attendance', ['only' => ['store']]);
+  //     $this->middleware('permission:Edit-attendance', ['only' => ['update', 'activate']]);
+  //     $this->middleware('permission:Delete-attendance', ['only' => ['destroy']]);
+  //     $this->attendanceService = $attendanceService;
+  //  }
    public function index(AttendanceRequest $request)
 {
     $data = $request->all();
