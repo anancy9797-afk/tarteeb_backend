@@ -12,7 +12,7 @@ use Modules\Session\Service\AttendanceService;
 use Modules\Session\App\Http\Requests\AttendanceRequest;
 use Modules\Session\App\Http\Requests\LateAttendanceRequest;
 use Modules\Session\App\resources\StudentAttendanceResource;
-
+use Modules\Session\Service\LateAttendanceService;
 
 class AttendanceController extends Controller
 {
