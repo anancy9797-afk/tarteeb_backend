@@ -61,7 +61,7 @@ class AttendanceController extends Controller
          return returnMessage(false, $e->getMessage(), null, 500);
       }
    }
-   public function lateAttendanceMessage(AttendanceRequest $request){
+   public function lateAttendanceMessage(LateAttendanceRequest $request){
     dd($request->all());
       // try{
       //    DB::beginTransaction();
