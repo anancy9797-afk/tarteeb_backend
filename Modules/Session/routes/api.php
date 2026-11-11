@@ -20,4 +20,5 @@ Route::delete('sessions/delete-multiple', [SessionController::class, 'deleteMult
 Route::apiResource('sessions', SessionController::class)->only(['index', 'store', 'destroy']);
 Route::post('sessions/import', [SessionController::class, 'importSessions']);
 Route::post('sessions/{session}', [SessionController::class, 'update']);
+Route::post('attendances/late-attendance-message', [AttendanceController::class, 'lateAttendanceMessage']);
 Route::apiResource('attendances', AttendanceController::class);
