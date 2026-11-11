@@ -95,8 +95,7 @@ public function __construct(
       try{
          DB::beginTransaction();
          $data = (new LateAttendanceDto($request))->dataFromRequest();
-         $this->LateAttendanceService->create($data);
-
+$this->lateAttendanceService->create($data);
         //  DB::commit();
 
         //  return returnMessage(true, 'Attendance Created Successfully', null);
