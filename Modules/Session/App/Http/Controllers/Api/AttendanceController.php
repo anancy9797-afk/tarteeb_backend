@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Modules\Session\DTO\AttendanceDto;
+use Modules\Session\DTO\LateAttendanceDto;
 use Modules\Session\Service\AttendanceService;
 use Modules\Session\App\Http\Requests\AttendanceRequest;
 use Modules\Session\App\Http\Requests\LateAttendanceRequest;
@@ -63,20 +64,19 @@ class AttendanceController extends Controller
       }
    }
    public function lateAttendanceMessage(LateAttendanceRequest $request){
-    dd($request->all());
-      // try{
-      //    DB::beginTransaction();
-      //    $data = (new AttendanceDto($request))->dataFromRequest();
+      try{
+         DB::beginTransaction();
+         $data = (new LateAttendanceDto($request))->dataFromRequest();
+dd($data);
+        //  $this->attendanceService->create($data);
 
-      //    $this->attendanceService->create($data);
+        //  DB::commit();
 
-      //    DB::commit();
+        //  return returnMessage(true, 'Attendance Created Successfully', null);
 
-      //    return returnMessage(true, 'Attendance Created Successfully', null);
-
-      // }catch(Exception $e){
-      //    DB::rollBack();
-      //    return returnMessage(false, $e->getMessage(), null, 500);
-      // }
+      }catch(Exception $e){
+         DB::rollBack();
+         return returnMessage(false, $e->getMessage(), null, 500);
+      }
    }
 }
