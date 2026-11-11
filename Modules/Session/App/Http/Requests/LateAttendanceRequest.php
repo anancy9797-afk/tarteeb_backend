@@ -20,8 +20,8 @@ class LateAttendanceRequest extends FormRequest
     {
         if($this->isMethod('GET')){
        return [
-            'student_ids' => ['required', 'array', 'min:1'],
-            'student_ids.*' => [
+            'ids' => ['required', 'array', 'min:1'],
+            'ids.*' => [
                 'required',
                 'integer',
                 'distinct',
