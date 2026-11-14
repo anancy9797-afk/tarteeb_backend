@@ -28,8 +28,16 @@ class ParentLateAttendanceWhatsAppJob implements ShouldQueue
     public function handle(): void
     {
 
-        $student = Student::find($this->studentId);
-      dd($student);
+    Log::info('Late Attendance Job Started', [
+        'student_id' => $this->studentId,
+    ]);
+
+    $student = Student::find($this->studentId);
+
+    Log::info('Student Found', [
+        'student' => $student?->name,
+        'parent_phone' => $student?->parent_phone,
+    ]);
 
         if (!$student || empty($student->parent_phone)) {
             return;
