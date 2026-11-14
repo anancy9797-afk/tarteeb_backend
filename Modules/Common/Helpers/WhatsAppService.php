@@ -8,8 +8,8 @@ use Illuminate\Support\Facades\Log;
 class WhatsAppService
 {
     /** Digits-only default when `services.ultramsg.default_country_code` / env is empty */
-    // private const FALLBACK_COUNTRY_CODE = '968';
-    private const FALLBACK_COUNTRY_CODE = '20';
+    private const FALLBACK_COUNTRY_CODE = '968';
+    // private const FALLBACK_COUNTRY_CODE = '20';
 
     protected $client;
 
