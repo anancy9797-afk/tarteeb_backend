@@ -21,16 +21,15 @@ class ParentLateAttendanceWhatsAppJob implements ShouldQueue
 
     public function __construct($studentId, $schoolSettings)
     {
-      dd($studentId);
         $this->studentId = $studentId;
         $this->schoolSettings = $schoolSettings;
     }
 
     public function handle(): void
     {
-      dd($studentId);
 
         $student = Student::find($this->studentId);
+      dd($student);
 
         if (!$student || empty($student->parent_phone)) {
             return;
