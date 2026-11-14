@@ -209,6 +209,7 @@ $teacherTakenAttendanceProfile =
         //     }
         // }
     }
+    }
 
     // function parentNotificationMail($studentId)
     // {
