@@ -192,12 +192,19 @@ function parentLateNotificationWhatsApp($studentIds, $schoolSettings)
             continue;
         }
 
+Log::info('ABOUT TO DISPATCH LATE JOB', [
+    'student_id' => $student->id,
+    'parent_phone' => $student->parent_phone,
+]);
 
-
-            ParentLateAttendanceWhatsAppJob::dispatch(
+ParentLateAttendanceWhatsAppJob::dispatch(
     $student->id,
-                $schoolSettings
-            )->onConnection('database');
+    $schoolSettings
+)->onConnection('database');
+
+Log::info('LATE JOB DISPATCHED', [
+    'student_id' => $student->id,
+]);
     }
 }
 
