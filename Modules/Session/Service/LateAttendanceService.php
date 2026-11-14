@@ -170,17 +170,16 @@ $teacherTakenAttendanceProfile =
     }
         function parentLateNotificationWhatsApp($studentId, $schoolSettings)
     {
+          dd([
+        'studentId' => $studentId,
+        'type' => gettype($studentId),
+        'schoolSettings' => !empty($schoolSettings),
+    ]);
+
 
         // $student = Student::find($studentId);
             $student = Student::query()->find($studentId);
-    // if (!$student) {
-    //     return;
-    // }
 
-    // if (empty($student->parent_phone)) {
-    //     return;
-    // }
-              dd($student);
 
         if ($student->parent_phone) {
             $studentTodayAbsences = Attendance::query()
