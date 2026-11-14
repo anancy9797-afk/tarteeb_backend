@@ -167,49 +167,42 @@ $teacherTakenAttendanceProfile =
             }
         }
     }
-        function parentLateNotificationWhatsApp($studentIds, $schoolSettings)
-    {
-      
-    $studentIds = (array) $studentIds;
+
+function parentLateNotificationWhatsApp($studentIds, $schoolSettings)
+{
+    // تحويل أرقام الطلاب إلى مصفوفة
+    $studentIds = is_array($studentIds)
+        ? $studentIds
+        : [$studentIds];
 
     foreach ($studentIds as $studentId) {
 
+        // التأكد أن القيمة رقم طالب
+        if (!is_numeric($studentId)) {
+            continue;
+        }
+
         $student = Student::find($studentId);
-
-        if (!$student) {
+dd($student->parent_phone);
+        if (!$student || empty($student->parent_phone)) {
             continue;
         }
 
-        if (empty($student->parent_phone)) {
-            continue;
-        }
-
-        dd($studentId, $schoolSettings);
-        $studentTodayAbsences = Attendance::query()
-            ->where('student_id', $studentId)
+        // التحقق من وجود سجل غياب اليوم
+        $hasLateAttendance = Attendance::query()
+            ->where('student_id', $student->id)
             ->where('is_present', 0)
             ->whereDate('created_at', now()->toDateString())
-            ->get();
-        if ($hasLateAttendance) {
+            ->exists();
 
+        if ($hasLateAttendance) {
             ParentNotificationWhatsAppJob::dispatch(
                 $student,
                 $schoolSettings
             )->onConnection('database');
         }
-        // if ($student->parent_phone) {
-        //     $studentTodayAbsences = Attendance::query()
-        //         // ->with(['session.class', 'session.subject', 'session.teacher'])
-        //         ->where('student_id', $studentId)
-        //         ->where('is_present', 0)
-        //         ->whereDate('created_at', now()->toDateString())
-        //         ->get();
-        //     if ($studentTodayAbsences->count() > 0) {
-        //         ParentNotificationWhatsAppJob::dispatch($student, $schoolSettings)->onConnection('database');
-        //     }
-        // }
     }
-    }
+}
 
     // function parentNotificationMail($studentId)
     // {
