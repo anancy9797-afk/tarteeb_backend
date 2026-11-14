@@ -167,7 +167,7 @@ $teacherTakenAttendanceProfile =
             }
         }
     }
-        function parentLateNotificationWhatsApp($studentId, $schoolSettings)
+        function parentLateNotificationWhatsApp($studentIds, $schoolSettings)
     {
       
     $studentIds = (array) $studentIds;
