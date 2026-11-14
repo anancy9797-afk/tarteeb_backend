@@ -167,7 +167,9 @@ $teacherTakenAttendanceProfile =
         function parentLateNotificationWhatsApp($studentId, $schoolSettings)
     {
 
-        $student = Student::find($studentId);
+        // $student = Student::find($studentId);
+            $student = Student::query()->find($studentId);
+
               dd($student->parent_phone);
 
         if ($student->parent_phone) {
