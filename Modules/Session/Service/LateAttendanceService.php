@@ -169,7 +169,13 @@ $teacherTakenAttendanceProfile =
 
         // $student = Student::find($studentId);
             $student = Student::query()->find($studentId);
+    if (!$student) {
+        return;
+    }
 
+    if (empty($student->parent_phone)) {
+        return;
+    }
               dd($student->parent_phone);
 
         if ($student->parent_phone) {
