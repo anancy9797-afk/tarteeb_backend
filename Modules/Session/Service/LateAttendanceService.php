@@ -56,8 +56,12 @@ $teacherTakenAttendanceProfile =
 
       // saveHistory( $attendance, $teacherTakenAttendance, $teacherTakenAttendanceProfile);
                     if ($schoolSettings) {
-                        $this->parentLateNotificationWhatsApp($studentAttendance, $schoolSettings);
-                    }
+        $studentId = data_get($studentAttendance, 'student_id');
+
+        $this->parentLateNotificationWhatsApp(
+            $studentId,
+            $schoolSettings
+        );                    }
 
 
 
