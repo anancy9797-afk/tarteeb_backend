@@ -184,7 +184,6 @@ function parentLateNotificationWhatsApp($studentIds, $schoolSettings)
         }
 
         $student = Student::find($studentId);
-dd($student->parent_phone);
         if (!$student || empty($student->parent_phone)) {
             continue;
         }
