@@ -57,7 +57,6 @@ $teacherTakenAttendanceProfile =
       // saveHistory( $attendance, $teacherTakenAttendance, $teacherTakenAttendanceProfile);
                     if ($schoolSettings) {
         $studentId = $studentAttendance;
-dd($studentAttendance);
         $this->parentLateNotificationWhatsApp(
             $studentId,
             $schoolSettings
