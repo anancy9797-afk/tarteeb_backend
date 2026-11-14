@@ -8,7 +8,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Modules\Common\Helpers\WhatsAppService;
 use Modules\Student\App\Models\Student;
-
+use Illuminate\Support\Facades\Log;
 class ParentLateAttendanceWhatsAppJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
