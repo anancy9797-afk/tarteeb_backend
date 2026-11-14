@@ -169,28 +169,45 @@ $teacherTakenAttendanceProfile =
     }
         function parentLateNotificationWhatsApp($studentId, $schoolSettings)
     {
-          dd([
-        'studentId' => $studentId,
-        'type' => gettype($studentId),
-        'schoolSettings' => !empty($schoolSettings),
-    ]);
+      
+    $studentIds = (array) $studentIds;
 
+    foreach ($studentIds as $studentId) {
 
-        // $student = Student::find($studentId);
-            $student = Student::query()->find($studentId);
+        $student = Student::find($studentId);
 
-
-        if ($student->parent_phone) {
-            $studentTodayAbsences = Attendance::query()
-                // ->with(['session.class', 'session.subject', 'session.teacher'])
-                ->where('student_id', $studentId)
-                ->where('is_present', 0)
-                ->whereDate('created_at', now()->toDateString())
-                ->get();
-            if ($studentTodayAbsences->count() > 0) {
-                ParentNotificationWhatsAppJob::dispatch($student, $schoolSettings)->onConnection('database');
-            }
+        if (!$student) {
+            continue;
         }
+
+        if (empty($student->parent_phone)) {
+            continue;
+        }
+
+        dd($studentId, $schoolSettings);
+        $studentTodayAbsences = Attendance::query()
+            ->where('student_id', $studentId)
+            ->where('is_present', 0)
+            ->whereDate('created_at', now()->toDateString())
+            ->get();
+        if ($hasLateAttendance) {
+
+            ParentNotificationWhatsAppJob::dispatch(
+                $student,
+                $schoolSettings
+            )->onConnection('database');
+        }
+        // if ($student->parent_phone) {
+        //     $studentTodayAbsences = Attendance::query()
+        //         // ->with(['session.class', 'session.subject', 'session.teacher'])
+        //         ->where('student_id', $studentId)
+        //         ->where('is_present', 0)
+        //         ->whereDate('created_at', now()->toDateString())
+        //         ->get();
+        //     if ($studentTodayAbsences->count() > 0) {
+        //         ParentNotificationWhatsAppJob::dispatch($student, $schoolSettings)->onConnection('database');
+        //     }
+        // }
     }
 
     // function parentNotificationMail($studentId)
