@@ -168,7 +168,7 @@ $teacherTakenAttendanceProfile =
     {
 
         $student = Student::find($studentId);
-              dd($student);
+              dd($student->parent_phone);
 
         if ($student->parent_phone) {
             $studentTodayAbsences = Attendance::query()
