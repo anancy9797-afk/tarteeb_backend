@@ -106,6 +106,10 @@ $teacherTakenAttendanceProfile =
 
             // }
         }
+           return [
+        'success' => true,
+        'message' => 'Late attendance notification queued successfully',
+    ];
     }
 
     // function create($data)
