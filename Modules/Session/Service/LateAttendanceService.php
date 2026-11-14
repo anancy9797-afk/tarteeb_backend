@@ -166,9 +166,10 @@ $teacherTakenAttendanceProfile =
     }
         function parentLateNotificationWhatsApp($studentId, $schoolSettings)
     {
-      dd($studentId);
 
         $student = Student::find($studentId);
+              dd($student);
+
         if ($student->parent_phone) {
             $studentTodayAbsences = Attendance::query()
                 // ->with(['session.class', 'session.subject', 'session.teacher'])
