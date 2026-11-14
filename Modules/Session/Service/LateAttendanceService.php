@@ -8,6 +8,7 @@ use Modules\Student\App\Models\Student;
 use Modules\Session\App\Models\Attendance;
 use Modules\Session\App\Jobs\ParentNotificationMailJob;
 use Modules\Session\App\Jobs\ParentNotificationWhatsAppJob;
+use Modules\Session\App\Jobs\ParentLateAttendanceWhatsAppJob;
 
 class LateAttendanceService
 {
@@ -188,19 +189,12 @@ dd($student->parent_phone);
             continue;
         }
 
-        // التحقق من وجود سجل غياب اليوم
-        $hasLateAttendance = Attendance::query()
-            ->where('student_id', $student->id)
-            ->where('is_present', 0)
-            ->whereDate('created_at', now()->toDateString())
-            ->exists();
 
-        if ($hasLateAttendance) {
-            ParentNotificationWhatsAppJob::dispatch(
+
+            ParentLateAttendanceWhatsAppJob::dispatch(
                 $student,
                 $schoolSettings
             )->onConnection('database');
-        }
     }
 }
 
