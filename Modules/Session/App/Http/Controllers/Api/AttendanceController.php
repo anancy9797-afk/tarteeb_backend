@@ -95,10 +95,11 @@ public function __construct(
       try{
          DB::beginTransaction();
          $data = (new LateAttendanceDto($request))->dataFromRequest();
-$this->lateAttendanceService->create($data);
-        //  DB::commit();
+        $result = $this->lateAttendanceService->create($data);
 
-        //  return returnMessage(true, 'Attendance Created Successfully', null);
+         DB::commit();
+
+         return returnMessage(true, 'Attendance Created Successfully', null);
 
       }catch(Exception $e){
          DB::rollBack();

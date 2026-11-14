@@ -9,7 +9,7 @@ use Modules\Session\App\Models\Attendance;
 use Modules\Session\App\Jobs\ParentNotificationMailJob;
 use Modules\Session\App\Jobs\ParentNotificationWhatsAppJob;
 use Modules\Session\App\Jobs\ParentLateAttendanceWhatsAppJob;
-
+use Illuminate\Support\Facades\Log;
 class LateAttendanceService
 {
     function findAll($data = [])
