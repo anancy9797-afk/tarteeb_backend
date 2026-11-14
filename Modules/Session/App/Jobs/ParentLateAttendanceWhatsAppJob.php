@@ -25,32 +25,41 @@ class ParentLateAttendanceWhatsAppJob implements ShouldQueue
         $this->schoolSettings = $schoolSettings;
     }
 
-    public function handle(): void
-    {
 
+public function handle(): void
+{
     Log::info('Late Attendance Job Started', [
         'student_id' => $this->studentId,
     ]);
 
     $student = Student::find($this->studentId);
 
-    Log::info('Student Found', [
-        'student' => $student?->name,
-        'parent_phone' => $student?->parent_phone,
-    ]);
+    if (!$student) {
+        Log::error('Late Attendance: Student not found', [
+            'student_id' => $this->studentId,
+        ]);
+        return;
+    }
 
-        if (!$student || empty($student->parent_phone)) {
-            return;
-        }
+    if (empty($student->parent_phone)) {
+        Log::warning('Late Attendance: Parent phone is empty', [
+            'student_id' => $student->id,
+        ]);
+        return;
+    }
 
-        if (
-            !$this->schoolSettings ||
-            !$this->schoolSettings->ultramsg_token ||
-            !$this->schoolSettings->ultramsg_instance_id
-        ) {
-            return;
-        }
+    if (
+        !$this->schoolSettings ||
+        !$this->schoolSettings->ultramsg_token ||
+        !$this->schoolSettings->ultramsg_instance_id
+    ) {
+        Log::error('Late Attendance: WhatsApp settings missing', [
+            'student_id' => $student->id,
+        ]);
+        return;
+    }
 
+    try {
         $whatsAppService = new WhatsAppService(
             $this->schoolSettings
         );
@@ -60,9 +69,23 @@ class ParentLateAttendanceWhatsAppJob implements ShouldQueue
             "نحيطكم علماً بأن الطالب قد تأخر عن الحضور إلى المدرسة اليوم.\n" .
             "نتمنى له يوماً دراسياً موفقاً.";
 
-        $whatsAppService->sendMessage(
+        $result = $whatsAppService->sendMessage(
             $student->parent_phone,
             $message
         );
+
+        Log::info('Late Attendance WhatsApp send attempted', [
+            'student_id' => $student->id,
+            'result' => $result,
+        ]);
+
+    } catch (\Throwable $e) {
+        Log::error('Late Attendance WhatsApp failed', [
+            'student_id' => $student->id,
+            'error' => $e->getMessage(),
+        ]);
+
+        throw $e;
     }
+}
 }
