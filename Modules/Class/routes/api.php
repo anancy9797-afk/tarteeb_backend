@@ -15,4 +15,4 @@ use Modules\Class\App\Http\Controllers\Api\ClassController;
 */
 
 Route::apiResource('classes', ClassController::class);
-    Route::post('classes/{id}', [ClassController::class, 'update']);
+    Route::post('classes/{class}', [ClassController::class, 'update']);

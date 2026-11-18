@@ -48,6 +48,7 @@ class ClassController extends Controller
          $data = (new ClassDto($request))->dataFromRequest();
          $class = $this->classService->update($class, $data);
          DB::commit();
+        //  dd( $class,"000000000");
          return returnMessage(true, 'Class Updated Successfully', $class);
       }catch(Exception $e){
          DB::rollBack();
