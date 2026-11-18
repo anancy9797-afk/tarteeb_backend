@@ -96,9 +96,9 @@ class StudentExpenseService
             }
 
             $rejectedExpense = $existingExpenses->firstWhere('status', 'rejected');
-            if ($rejectedExpense) {
-                throw new \Exception('You have a rejected expense request, please update it before creating a new one');
-            }
+            // if ($rejectedExpense) {
+            //     throw new \Exception('You have a rejected expense request, please update it before creating a new one');
+            // }
 
             $totalAmountPaid = $existingExpenses->where('status', 'accepted')->sum('amount_paid');
             $requiredAmount = $data['amount'];
