@@ -17,20 +17,30 @@ class ClassRequest extends FormRequest
      */
     public function rules(): array
     {
+
         if ($this->isMethod('POST')) {
             $rules = [
                 'name' => ['required', 'string', 'max:255'],
-                'grade_id' => auth('user')->user()->hasRole('School Manager') ?
-                    ['required', 'exists:grades,id', new GradeBelongToSchool(auth('user')->user()->school_id)] :
-                    ['required', 'exists:grades,id', new GradeBelongToSchool($this->input('school_id'))],
+                'grade_id'=>['required', 'exists:grades,id'],
+                // 'grade_id' => auth('user')->user()->hasRole('School Manager') ?
+                //     ['required', 'exists:grades,id', new GradeBelongToSchool(auth('user')->user()->school_id)] :
+                //     ['required', 'exists:grades,id', new GradeBelongToSchool($this->input('school_id'))],
                 'max_students' => ['required', 'integer'],
                 'session_number' => ['required', 'integer'],
             ];
-            if (auth('user')->user()->hasRole('Super Admin')) {
+
+            if(auth('user')->user()){
+    if (auth('user')->user()->hasRole('Super Admin')) {
                 $rules['school_id'] = ['required', 'exists:schools,id'];
             } else {
                 $rules['school_id'] = ['prohibited'];
             }
+            }else{
+                              $rules['school_id'] = ['prohibited'];
+
+            }
+        
+
             return $rules;
         }
         if ($this->isMethod('PUT')) {

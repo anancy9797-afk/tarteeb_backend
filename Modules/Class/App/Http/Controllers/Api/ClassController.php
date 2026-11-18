@@ -42,6 +42,8 @@ class ClassController extends Controller
 
    public function update(ClassRequest $request, Classroom $class){
       try{
+        //  dd("123");
+
          DB::beginTransaction();
          $data = (new ClassDto($request))->dataFromRequest();
          $class = $this->classService->update($class, $data);
